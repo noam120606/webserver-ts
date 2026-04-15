@@ -1,4 +1,10 @@
-import { LogEntry, Logger } from "~/types/log";
+declare interface LogEntry {
+    level: 'info' | 'debug' | 'warn' | 'error' | 'fatal';
+    message: string;
+    meta?: any;
+}
+
+declare type Logger = (entry: LogEntry) => void;
 
 export const log : Logger = (entry: LogEntry) => {
 
