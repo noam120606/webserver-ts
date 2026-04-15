@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import session from 'express-session';
 import cors from 'cors';
 import dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
 
 declare module 'express-session' {
     interface SessionData {
@@ -11,7 +12,6 @@ declare module 'express-session' {
 
 import log from './utils/logger';
 import config from './config';
-dotenv.config({ path: '../.env' });
 
 import logMiddleware from './middlewares/log';
 import authVerifMiddleware from './middlewares/authverif';
