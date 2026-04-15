@@ -2,7 +2,10 @@ export default {
 
     port: process.env.PORT || 3000,
 
-    cors: {
+    cors: process.env.NODE_ENV === 'production' ? {
+        origin: 'https://your-production-domain.com', // CHANGE HERE
+        optionsSuccessStatus: 200,
+    } : {
         origin: '*',
     },
 

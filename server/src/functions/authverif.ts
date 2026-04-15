@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import log from '../utils/logger';
 
-const authVerifMiddleware = () => (req: Request, res: Response, next: NextFunction) => {
+const authVerif = (req: Request, res: Response) : boolean => {
     if (!req.session || !req.session.authenticated) {
         res.status(401).json({ ok: false, error: 'Unauthorized' });
         log({
             level: 'warn',
             message: `[${req.ip}] Unauthorized access attempt to "${req.originalUrl}"`
         });
-        return;
+        return false;  // Unauthorized
     }
-    next();
+    return true;  // Authorized
 };
 
-export default authVerifMiddleware;
+export default authVerif;

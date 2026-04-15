@@ -1,7 +1,7 @@
 cd client
 npm install
 npm run build
-mv dist ../server/public
+mv dist ../server/frontend
 cd ../server
 npm install
 npm run build
