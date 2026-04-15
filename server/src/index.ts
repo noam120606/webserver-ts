@@ -11,7 +11,7 @@ declare module 'express-session' {
 
 import log from './utils/logger';
 import config from './config';
-dotenv.config({ path: './.env' });
+dotenv.config({ path: '../.env' });
 
 import logMiddleware from './middlewares/log';
 import authVerifMiddleware from './middlewares/authverif';
