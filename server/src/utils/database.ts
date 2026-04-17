@@ -1,6 +1,7 @@
 import mysql, { Pool } from 'mysql2/promise';
 import fs from 'fs/promises'; // Version promise de fs pour ne pas bloquer l'event loop
 import path from 'path';
+import { isCompiled } from './utils';
 import log from './logger';
 
 class Database {
@@ -44,9 +45,9 @@ class Database {
 
     async init() {
         try {
-            const initSqlPath = path.resolve(__dirname, '..', 'assets', 'setup.sql');
+            const initSqlPath = path.resolve(__dirname, isCompiled() ? '.' : '..', 'assets', 'setup.sql');
             const initSql = await fs.readFile(initSqlPath, 'utf8');
-
+            
             // On sépare par ; mais on fait attention aux commentaires
             const queries = initSql
                 .replace(/\/\*[\s\S]*?\*\/|--.*$/gm, '') // Nettoyage commentaires
