@@ -1,44 +1,38 @@
-declare interface LogEntry {
-    level: 'info' | 'debug' | 'warn' | 'error' | 'fatal';
+export type LogLevel = 'info' | 'debug' | 'warn' | 'error' | 'fatal';
+
+export interface LogEntry {
+    level: LogLevel;
     message: string;
-    meta?: any;
+    meta?: unknown;
 }
 
-declare type Logger = (entry: LogEntry) => void;
+const COLOR_MAP: Record<LogLevel, string> = {
+    info: '\x1b[32m',  // Green
+    debug: '\x1b[34m', // Blue
+    warn: '\x1b[33m',  // Yellow
+    error: '\x1b[31m', // Red
+    fatal: '\x1b[35m'  // Magenta
+};
 
-export const log : Logger = (entry: LogEntry) => {
+const RESET = '\x1b[0m';
+const IS_DEBUG = process.env.DEBUG === 'true';
 
-    if (entry.level === 'debug' && process.env.DEBUG !== 'true') {
-        return;
-    }
+export const log = (entry: LogEntry): void => {
 
-    const colorMap : { [key in LogEntry['level']]: string } = {
-        info: '\x1b[32m', // Green
-        debug: '\x1b[34m', // Blue
-        warn: '\x1b[33m', // Yellow
-        error: '\x1b[31m', // Red
-        fatal: '\x1b[35m'  // Magenta
-    };
+    if (entry.level === 'debug' && !IS_DEBUG) return;
 
-    const color : string = colorMap[entry.level];
-    const reset : string = '\x1b[0m';
+    const timestamp = new Date().toISOString();
+    const color = COLOR_MAP[entry.level];
+    
+    const header = `[${timestamp}] [${color}${entry.level.toUpperCase()}${RESET}]`;
+    const fullMessage = `${header} ${entry.message}`;
 
-    const timestamp : string = new Date().toLocaleString();
-    const message : string = `[${timestamp}] [${color}${entry.level.toUpperCase()}${reset}] ${entry.message}`;
-
-    const logFunction : Function = ['error', 'fatal'].includes(entry.level) ? console.error : console.log;
-
-    if (entry.meta) {
-        logFunction(message, entry.meta);
+    if (entry.level === 'error' || entry.level === 'fatal') {
+        entry.meta ? console.error(fullMessage, entry.meta) : console.error(fullMessage);
     } else {
-        logFunction(message);
-    }
-
-    if (entry.level === 'fatal') {
-        process.exit(1);
+        entry.meta ? console.log(fullMessage, entry.meta) : console.log(fullMessage);
     }
 
 };
 
-export { LogEntry, Logger };
 export default log;

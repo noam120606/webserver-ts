@@ -26,6 +26,7 @@ class Database {
             this.online = true;
         } catch (error) {
             log({ level: 'fatal', message: 'Failed to connect to MySQL', meta: { error } });
+            throw error;
         }
     }
 
