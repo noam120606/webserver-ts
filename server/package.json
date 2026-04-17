@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "connect-session-sequelize": "^8.0.6",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
@@ -19,6 +20,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.22.0",
     "path": "^0.12.7",
+    "sequelize": "^6.37.8",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
